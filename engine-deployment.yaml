@@ -37,6 +37,30 @@ items:
     wildcardPolicy: None
 
 - apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: ovirt-db-claim
+  spec:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 10Gi
+    volumeName: ovirt-db-volume
+
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: ovirt-engine-claim
+  spec:
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: 10Gi
+    volumeName: ovirt-engine-volume
+
+- apiVersion: v1
   kind: DeploymentConfig
   metadata:
     name: ovirt-engine
@@ -91,11 +115,17 @@ items:
                 protocol: TCP
             volumeMounts:
               - mountPath: /etc/pki/ovirt-engine
-                name: certs
+                name: engine-data
+                subPath: pki
               - mountPath: /var/lib/ovirt-engine/backups
-                name: backups
+                name: engine-data
+                subPath: backups
               - mountPath: /usr/share/ovirt-engine/ui-plugins/
-                name: plugins
+                name: engine-data
+                subPath: ui-plugins
+              - mountPath: /etc/ovirt-engine/ui-plugins/
+                name: engine-data
+                subPath: ui-plugins-etc
             livenessProbe:
               httpGet:
                 path: /ovirt-engine/services/health
@@ -139,13 +169,11 @@ items:
                 value: https://localhost:8443/ovirt-engine/sso"
 
         volumes:
-          - emptyDir: {}
-            name: certs
-          - emptyDir: {}
-            name: backups
-          - emptyDir: {}
-            name: pgdata
-          - emptyDir: {}
-            name: plugins
+          - name: engine-data
+            persistentVolumeClaim:
+              claimName: ovirt-engine-claim
+          - name: pgdata
+            persistentVolumeClaim:
+              claimName: ovirt-db-claim
 
 
