@@ -62,7 +62,7 @@ items:
               - containerPort: 3128
                 protocol: TCP
 
-          - image: rmohr/ovirt-postgres:latest
+          - image: marsik/ovirt-postgres:9.2.18
             name: postgres
             imagePullPolicy: "Always"
             ports:
@@ -101,9 +101,9 @@ items:
                 path: /ovirt-engine/services/health
                 port: 8443
                 scheme: HTTPS
-              initialDelaySeconds: 30
+              initialDelaySeconds: 600
               timeoutSeconds: 5
-              periodSeconds: 10
+              periodSeconds: 60
               successThreshold: 1
               failureThreshold: 3
             readinessProbe:
