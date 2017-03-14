@@ -46,7 +46,6 @@ items:
     resources:
       requests:
         storage: 10Gi
-    volumeName: ovirt-db-volume
 
 - apiVersion: v1
   kind: PersistentVolumeClaim
@@ -58,7 +57,6 @@ items:
     resources:
       requests:
         storage: 10Gi
-    volumeName: ovirt-engine-volume
 
 - apiVersion: v1
   kind: DeploymentConfig
