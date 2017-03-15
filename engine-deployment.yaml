@@ -164,7 +164,7 @@ items:
               - name: SPICE_PROXY
                 value: http://172.17.0.1:3128  # Is there a way to get this from openshift?
               - name: ENGINE_SSO_SERVICE_URL
-                value: https://localhost:8443/ovirt-engine/sso"
+                value: https://localhost:8443/ovirt-engine/sso
 
         volumes:
           - name: engine-data
